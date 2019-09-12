@@ -2,4 +2,11 @@
 *.kicad_pcb-bak
 
 mallory.sch-bak
+
 /elecrow
+
+*.zip
+
+*.*-bak
+
+fp-info-cache
