@@ -1,15 +1,18 @@
 /* set output quality */
 $fn = 50;
 
+// constants
 width = 351.2987;
 height = 132.9143;
-
 hole_distance = 114.0996;
 m3_r = 1.75;
-
+pcb_screw_insert_r = 1.75;
 switch_hole_size = 20.06;
 switch_distance = 19.05;
+
+// variables
 switch_plate_height = 5;
+mid_plate_height = 10;
 
 module plate(w, h, d, edge_r) {
     hull() {
@@ -21,14 +24,25 @@ module plate(w, h, d, edge_r) {
 }
 
 module pcb_hole() {
+    top_wall=9;
+    side_wall=6;
+    bottom_wall=25;
+    
     l = 200;
     w = -l*tan(12)/2;
     
-    translate([0, 26.0443, 0]) plate(width-6.53*2, height-9.53-26.0443, 50, 1.5);
-    translate([(72.64-73.1387)/2, 26.0443-w-20.1355, -10]) linear_extrude(height=20, slices=20, twist=0) polygon(points=[[l/2,0], [-l/2,0], [0,w]]);
+    translate([0, bottom_wall, 0]) {
+        plate(width-side_wall*2, height-top_wall-bottom_wall, 50, 1.5);
+    }
+    
+    // triangle part
+    translate([(72.64-73.1387)/2, bottom_wall-w-20.1355, -10]) {
+        linear_extrude(height=20, slices=20, twist=0) 
+        polygon(points=[[l/2,0], [-l/2,0], [0,w]]);
+    }
 }
 
-screw_positions = [
+case_screw_positions = [
     [hole_distance*0.5, 4.5],
     [hole_distance*1.5, 4.5],
     [hole_distance*-0.5, 4.5],
@@ -39,18 +53,45 @@ screw_positions = [
     [hole_distance*-1.5, height-4.5],
 ];
 
-module screw_holes() {
-    for (i=screw_positions) {
+module case_screw_holes() {
+    for (i=case_screw_positions) {
         translate([i[0], i[1], 0]) cylinder(r=m3_r, h=50, center=true);
     }
 }
 
+pcb_screw_positions = [
+    [-151.38935, 126.4143, -90],
+    [ 151.38935, 126.4143, -90],
+    [-151.38935,  22.5143,  90],
+    [ 151.38935,  22.5143,  90],
+    [ -41.38165, 117.1262, -102],
+    [ -48.25285,  12.759 ,  78],
+    [  47.75415,  12.759 , 102],
+    [  39.56365, 118.8066, -78],
+];
 
-module mid_plate() {
-    difference() {
-        plate(width, height, 10, 2); 
-        pcb_hole();
-        screw_holes();
+module mv(r, a) {
+    translate([
+        r * cos(a),
+        r * sin(a), 
+        0
+    ]) { children(); }
+}
+
+module pcb_screw_holes(extended=false) {
+    if (extended) {
+        for (i=pcb_screw_positions) {
+            translate([i[0], i[1], 0]) {
+                hull() {
+                    cylinder(r=3.25, h=50, center=true);
+                    mv(3, i[2]) cylinder(r=5, h=50, center=true);
+                }
+            }
+        }
+    } else {
+        for (i=pcb_screw_positions) {
+            translate([i[0], i[1], 0]) cylinder(r=pcb_screw_insert_r, h=50, center=true);
+        }
     }
 }
 
@@ -175,17 +216,65 @@ module switch_holes() {
     }
 }
 
+module pro_micro_hole() {
+    translate([
+            -width/2 + (3*cos(12)+1.5*cos(78))*switch_distance + 105.47, 
+            height - (3*sin(12)-1.5*sin(78))*switch_distance - 22.99, 
+            0
+        ]) { rotate([0,0,-12]) switch_hole(1);}
+}
 
-module switch_plate() {
-    difference() {
-        plate(width, height, switch_plate_height, 2); 
-        switch_holes();
-        screw_holes();
+module border() {
+    translate([-35, 0, -5]) rotate([0, 0, -12]) {
+        difference() {
+            cube([250, 200, 100]);
+            cube([23, 20, 200]);
+        }
+    }
+}
+
+module halve(isLeft=true) {
+    if (isLeft) {
+        difference() {
+            children();
+            border();
+        }
+    } else {
+        intersection() {
+            children();
+            border();
+        }
     }
 }
 
 
+module switch_plate(depth=switch_plate_height, isSurface=false) {
+    difference() {
+        plate(width, height, depth, 2); 
+        switch_holes();
+        if (!isSurface) {
+            case_screw_holes();
+            pcb_screw_holes();
+        }
+    }
+}
 
-translate([0,0,-5]) mid_plate();
-translate([0,0,switch_plate_height/2]) switch_plate();
+module mid_plate() {
+    difference() {
+        plate(width, height, mid_plate_height, 2); 
+        pcb_hole();
+        case_screw_holes();
+        pcb_screw_holes(true);
+        pro_micro_hole();
+    }
+}
 
+module case() {
+    translate([0,0,mid_plate_height/2]) mid_plate();
+    translate([0,0,switch_plate_height/2+mid_plate_height]) switch_plate();
+    translate([0,0,switch_plate_height+mid_plate_height]) switch_plate(depth=0.2, isSurface=true);
+}
+
+halve() case();
+//border();
+//case();
