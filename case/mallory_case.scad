@@ -7,7 +7,7 @@ height = 132.9143;
 hole_distance = 114.0996;
 m3_r = 1.75;
 pcb_screw_insert_r = 1.75;
-switch_hole_size = 20.06;
+switch_hole_size = 20.1;
 switch_distance = 19.05;
 
 // variables
@@ -24,8 +24,8 @@ module plate(w, h, d, edge_r) {
 }
 
 module pcb_hole() {
-    top_wall=9;
-    side_wall=6;
+    top_wall=8.5;
+    side_wall=5.5;
     bottom_wall=25;
     
     l = 200;
@@ -129,8 +129,8 @@ switch_positions_2 = [
     [1.25, 3, 1],
     [2.25, 3, 1],
     [3.25, 3, 1],
-    [0.25, 4.07929134, 1.5],
-    [0.25, 4, 1.5],  // dummy
+    [0.225, 4.07929134, 1.5],
+    [0.5, 4, 2],  // dummy
     [2.125, 4, 2.25],
     [3.625, 4, 1.25],
     [3.75, 4, 1],
@@ -155,8 +155,9 @@ switch_positions_3 = [
     [2.25, 3, 1.9], // For filling the gap
     [-0.75, 3.5, 1], // dummy
     [0.125, 4, 2.75],
-    [2.25, 4.07929134, 1.5],
-    [2.25, 4, 1.5],  // dummy
+    //[2.3, 4.07929134, 1.55],
+    [2.275, 4.07929134, 1.5],
+    [2, 4, 2],  // dummy
 ];
 
 switch_positions_4 = [
@@ -233,6 +234,30 @@ module border() {
     }
 }
 
+module battery() {
+    bs = 96;  // battery size
+    pt = 1; // plate thickness
+    
+
+    cube([bs-5, 10.5, 10.5], center=true);
+    cube([bs, 8, 10.5], center=true);
+    //cube([bs+12, 10.5, 7.5], center=true);
+    translate([0, 0, 5.25]) rotate([0, 90, 0]) cylinder(d=10.5, h=bs-5, center=true);
+    translate([0, 0, 5.25]) rotate([0, 90, 0]) cylinder(d=8, h=bs, center=true);
+    
+    // For plates
+    translate([ (bs-pt)/2,  0, 5.25]) cube([pt, 10.5, 10.5], center=true);
+    translate([-(bs-pt)/2,  0, 5.25]) cube([pt, 10.5, 10.5], center=true);
+    
+    translate([ (bs+6)/2, 5, 0]) cube([6, 20.5, 7.5], center=true);
+    translate([-(bs+6)/2, 5, 0]) cube([6, 20.5, 7.5], center=true);
+}
+
+module power_switch() {
+    cube([12, 8.6, 7.5], center=true);
+    cube([17, 6, 7.5], center=true);
+}
+
 module halve(isLeft=true) {
     if (isLeft) {
         difference() {
@@ -275,6 +300,18 @@ module case() {
     translate([0,0,switch_plate_height+mid_plate_height]) switch_plate(depth=0.2, isSurface=true);
 }
 
-halve() case();
+module case_with_battery() {
+    difference() {
+        case();
+        translate([-113, 10, 0]) battery();
+        translate([-width/2+8, 15, 0]) power_switch();
+    }
+}
+
+//halve() case();
 //border();
-//case();
+halve() case_with_battery();
+//battery();
+//power_switch();
+
+     
