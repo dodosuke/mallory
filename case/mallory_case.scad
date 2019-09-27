@@ -389,7 +389,7 @@ module case_with_battery() {
     }
 }
 
-//case_with_battery();
+case_with_battery();
 //left() case_with_battery();
 //right() case_with_battery();
 
