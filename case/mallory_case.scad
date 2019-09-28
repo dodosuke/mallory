@@ -7,7 +7,8 @@ height = 132.91;
 case_hole_distance = 114.0996;
 m3_r = 1.75;
 pcb_screw_insert_r = 1.75;
-switch_hole_size = 20.1;
+switch_hole_size=14;
+key_spacing = 20.1;
 switch_distance = 19.05;
 
 // variables
@@ -123,152 +124,150 @@ module pcb_screw_holes(extended=false) {
     }
 }
 
-switch_positions_1 = [
-    [0, 0, 1],
-    [-0.2183727, 1, 1],
-    [-0.432021, 2, 1],
-    [1.20839895, 0.11233596, 1],
-    [2.20839895, 0.11233596, 1.2], // For filling the gap
-    [1.23989501, 1.11233596, 1.5],
-    [2.48976378, 1.11233596, 1],
-    [1.15130184, 2.11233596, 1.75],
-    [2.52650919, 2.11233596, 1],
-    [1.18267717, 3.11233596, 2.25],
-    [2.80734908, 3.11233596, 1.2], // For filling the gap
-    [0.80787402, 3.6, 1.5], // For filling the gap
-    [0.80787402, 4.11233596, 1.5],
-    [3.18687664, 0, 1],
+switch_offsets=[
+    [24.260, 113.88, 0], // x, y, key angle
+    [105.47, 109.92, -12],
+    [189.5289, 100.22, 12],
+    [265.93, 113.88, 0]
 ];
 
-switch_positions_2 = [
-    [0, 0, 1.8], // For filling the gap
-    [1, 0, 1.2], // For filling the gap
-    [2, 0, 1.2], // For filling the gap
-    [3, 0, 1],
-    [-0.5, 1, 1.8], // For filling the gap
-    [0.5, 1, 1],
-    [1.5, 1, 1],
-    [2.5, 1, 1],
-    [-0.25, 2, 1.8], // For filling the gap
-    [0.75, 2, 1],
-    [1.75, 2, 1],
-    [2.75, 2, 1],
-    [0.25, 3, 1.9], // For filling the gap
-    [1.25, 3, 1],
-    [2.25, 3, 1],
-    [3.25, 3, 1],
-    [0.225, 4.07929134, 1.5],
-    [0.5, 4, 2],  // dummy
-    [2.125, 4, 2.25],
-    [3.625, 4, 1.25],
-    [3.75, 4, 1],
+switch_positions=[
+    [
+        [0, 0, 1],
+        [-0.2183727, 1, 1],
+        [-0.432021, 2, 1],
+        [1.20839895, 0.11233596, 1],
+        [2.20839895, 0.11233596, 1.2], // For filling the gap
+        [1.23989501, 1.11233596, 1.5],
+        [2.48976378, 1.11233596, 1],
+        [1.15130184, 2.11233596, 1.75],
+        [2.52650919, 2.11233596, 1],
+        [1.18267717, 3.11233596, 2.25],
+        [2.80734908, 3.11233596, 1.2], // For filling the gap
+        [0.80787402, 3.6, 1.5], // For filling the gap
+        [0.80787402, 4.11233596, 1.5],
+        [3.18687664, 0, 1],
+    ],
+    [
+        [0, 0, 1.8], // For filling the gap
+        [1, 0, 1.2], // For filling the gap
+        [2, 0, 1.2], // For filling the gap
+        [3, 0, 1],
+        [-0.5, 1, 1.8], // For filling the gap
+        [0.5, 1, 1],
+        [1.5, 1, 1],
+        [2.5, 1, 1],
+        [-0.25, 2, 1.8], // For filling the gap
+        [0.75, 2, 1],
+        [1.75, 2, 1],
+        [2.75, 2, 1],
+        [0.25, 3, 1.9], // For filling the gap
+        [1.25, 3, 1],
+        [2.25, 3, 1],
+        [3.25, 3, 1],
+        [0.225, 4.07929134, 1.5],
+        [0.5, 4, 2],  // dummy
+        [2.125, 4, 2.25],
+        [3.625, 4, 1.25],
+        [3.75, 4, 1],
+    ],
+    [
+        [0, 0, 1],
+        [1, 0, 1.2], // For smoothing
+        [2, 0, 1.2], // For smoothing
+        [3, 0, 1.05], // For smoothing
+        [-0.5, 1, 1],
+        [0.5, 1, 1],
+        [1.5, 1, 1],
+        [2.5, 1, 1.9], // For filling the gap
+        [-0.25, 2, 1],
+        [0.75, 2, 1],
+        [1.75, 2, 1],
+        [2.75, 2, 1.9], // For filling the gap
+        [-0.75, 3, 1],
+        [0.25, 3, 1],
+        [1.25, 3, 1],
+        [2.25, 3, 1.9], // For filling the gap
+        [-0.75, 3.5, 1], // dummy
+        [0.125, 4, 2.75],
+        //[2.3, 4.07929134, 1.55],
+        [2.275, 4.07929134, 1.5],
+        [2, 4, 2],  // dummy
+    ],
+    [
+        [-0.1, 0, 1.2], // For filling the gap
+        [0, 0.11233596, 1], // dummy
+        [0.97795276, 0.11233596, 1.2], // For smoothing
+        [2.47795276, 0.11233596, 2],
+        [-0.28136483, 1.05669291, 1],
+        [-0.28136483, 1.2, 1], // dummy
+        [0.69658793, 1.11233596, 1],
+        [1.69658793, 1.11233596, 1],
+        [2.94658793, 1.11233596, 1.5],
+        [0.17112861, 2.11233596, 1],
+        [1.17112861, 2.11233596, 1],
+        [2.79580052, 2.11233596, 2.25],
+        [-0.11023622, 3.11233596, 1],
+        [0.88976378, 3.11233596, 1.2], // For smoothing
+        [2.26476378, 3.11233596, 1.75],
+        [3.63976378, 3.11233596, 1],
+        [3.19661417, 4.11233596, 1.5],
+    ],
 ];
 
-switch_positions_3 = [
-    [0, 0, 1],
-    [1, 0, 1.2], // For smoothing
-    [2, 0, 1.2], // For smoothing
-    [3, 0, 1.05], // For smoothing
-    [-0.5, 1, 1],
-    [0.5, 1, 1],
-    [1.5, 1, 1],
-    [2.5, 1, 1.9], // For filling the gap
-    [-0.25, 2, 1],
-    [0.75, 2, 1],
-    [1.75, 2, 1],
-    [2.75, 2, 1.9], // For filling the gap
-    [-0.75, 3, 1],
-    [0.25, 3, 1],
-    [1.25, 3, 1],
-    [2.25, 3, 1.9], // For filling the gap
-    [-0.75, 3.5, 1], // dummy
-    [0.125, 4, 2.75],
-    //[2.3, 4.07929134, 1.55],
-    [2.275, 4.07929134, 1.5],
-    [2, 4, 2],  // dummy
-];
-
-switch_positions_4 = [
-    [-0.1, 0, 1.2], // For filling the gap
-    [0, 0.11233596, 1], // dummy
-    [0.97795276, 0.11233596, 1.2], // For smoothing
-    [2.47795276, 0.11233596, 2],
-    [-0.28136483, 1.05669291, 1],
-    [-0.28136483, 1.2, 1], // dummy
-    [0.69658793, 1.11233596, 1],
-    [1.69658793, 1.11233596, 1],
-    [2.94658793, 1.11233596, 1.5],
-    [0.17112861, 2.11233596, 1],
-    [1.17112861, 2.11233596, 1],
-    [2.79580052, 2.11233596, 2.25],
-    [-0.11023622, 3.11233596, 1],
-    [0.88976378, 3.11233596, 1.2], // For smoothing
-    [2.26476378, 3.11233596, 1.75],
-    [3.63976378, 3.11233596, 1],
-    [3.19661417, 4.11233596, 1.5],
-];
-
-module switch_hole(position, u=1, depth, angle=0) {
-    translate([position[0], position[1]]) {
-        rotate([0, 0, angle]) {
-            plate([
-                switch_hole_size+switch_distance*(u-1), 
-                switch_hole_size, 
-                depth
-            ], 1.5, center=true);
+module switch_hole(depth) {
+    notch_width  = 3.5001;
+    notch_offset = 4.2545;
+    notch_depth  = 0.8128;
+    if (depth==0) {
+        square([switch_hole_size, switch_hole_size], center=true);
+        translate([0, notch_offset]) {
+            square([switch_hole_size+2*notch_depth, notch_width], center=true);
+        }
+        translate([0, -notch_offset]) {
+            square([switch_hole_size+2*notch_depth, notch_width], center=true);
+        }
+    } else {
+        cube([switch_hole_size, switch_hole_size, depth*4], center=true);
+        translate([0, notch_offset]) {
+            cube([switch_hole_size+2*notch_depth, notch_width, depth*4], center=true);
+        }
+        translate([0, -notch_offset]) {
+            cube([switch_hole_size+2*notch_depth, notch_width, depth*4], center=true);
         }
     }
 }
 
-//module switch_hole(position, notches=use_notched_holes) {
-//    notch_width  = 3.5001;
-//    notch_offset = 4.2545;
-//    notch_depth  = 0.8128;
-//    
-//    translate(position) {
-//        union() {
-//            square([switch_hole_size, switch_hole_size], center=true);
-//            if (notches == true) {
-//                translate([0, notch_offset]) {
-//                    square([switch_hole_size+2*notch_depth, notch_width], center=true);
-//                }
-//                translate([0, -notch_offset]) {
-//                    square([switch_hole_size+2*notch_depth, notch_width], center=true);
-//                }
-//            }
-//        }
-//    }
-//};
+module key_hole(position, u=1, depth, angle=0, switch) {
+    translate([position[0], position[1]]) {
+        rotate([0, 0, angle]) {
+            if (switch) {
+                switch_hole(depth);
+            } else {
+                plate([
+                    key_spacing+switch_distance*(u-1), 
+                    key_spacing, 
+                    depth
+                ], 1.5, center=true);
+            }
+        }
+    }
+}
 
-module switch_holes(depth) {
-    for (i=switch_positions_1) {
-        switch_hole([
-            24.260 + i[0]*switch_distance, 
-            113.88 - i[1]*switch_distance
-        ], i[2], depth*4);
-    }
-    for (i=switch_positions_2) {
-        switch_hole([
-            105.47 + (i[0]*cos(12)-i[1]*cos(78))*switch_distance, 
-            109.92 - (i[0]*sin(12)+i[1]*sin(78))*switch_distance
-        ], i[2], depth*4, angle=-12);
-    }
-    for (i=switch_positions_3) {
-        switch_hole([
-            189.5289 + (i[0]*cos(12)+i[1]*cos(78))*switch_distance, 
-            100.22 - (i[0]*sin(-12)+i[1]*sin(78))*switch_distance
-        ], i[2], depth*4, angle=12);
-    }
-   for (i=switch_positions_4) {
-        switch_hole([
-            265.93 + i[0]*switch_distance, 
-            113.88 - i[1]*switch_distance
-        ], i[2], depth*4);
+module key_holes(depth, switch=false) {
+    for (i=[0:3]) {
+        for (j=switch_positions[i]) {
+            a=switch_offsets[i][2];
+            key_hole([
+                switch_offsets[i][0] + (j[0]*cos(a)+j[1]*sin(a))*switch_distance, 
+                switch_offsets[i][1] + (j[0]*sin(a)-j[1]*cos(a))*switch_distance
+            ], j[2], depth=depth*4, angle=a, switch=switch);
+        }
     }
 }
 
 module pro_micro_hole(depth=50) {
-    switch_hole([
+    key_hole([
         (3*cos(12)+1*cos(78))*switch_distance + 105.47,
         109.92 - (3*sin(12)-1*sin(78))*switch_distance,
     ], 3, depth, angle=78);
@@ -306,33 +305,25 @@ module border() {
     }
 }
 
-module halve(left=true) {
-    if (left) {
-        difference() {
-            children();
-            border();
-        }
-    } else {
-        intersection() {
-            children();
-            border();
-        }
+module left() {
+    difference() {
+        children();
+        border();
     }
 }
 
-module left() {
-    halve(true) children();
-}
-
 module right() {
-    halve(false) children();
+    intersection() {
+        children();
+        border();
+    }
 }
 
 // 2D or 3D draw for top plate
-module switch_plate(depth=switch_plate_height) {
+module top_plate(depth=switch_plate_height) {
     difference() {
         plate([width, height, depth], 2); 
-        switch_holes(depth);
+        key_holes(depth);
         if (depth==0) {
             case_screw_holes(depth);
         } else if (depth==0.2) {
@@ -359,7 +350,14 @@ feet_screw_positions = [
     [width/2-case_hole_distance*0.5, height-30],
     [width/2+case_hole_distance*0.5+90, height-30],
     [width/2-case_hole_distance*0.5-90, height-30],
-];
+];  
+
+module switch_plate(depth=0) {
+    difference() {
+        plate([width, height, 0], 2); 
+        key_holes(depth, switch=true);
+    }
+}
 
 // 2D draw for acrylic bottom plate
 module bottom_plate() {
@@ -377,8 +375,8 @@ module bottom_plate() {
 
 module case() {
     mid_plate();
-    translate([0,0,mid_plate_height]) switch_plate();
-    translate([0,0,switch_plate_height+mid_plate_height-0.1]) switch_plate(depth=0.2);
+    translate([0,0,mid_plate_height]) top_plate();
+    translate([0,0,switch_plate_height+mid_plate_height-0.1]) top_plate(depth=0.2);
 }
 
 module case_with_battery() {
@@ -393,7 +391,5 @@ case_with_battery();
 //left() case_with_battery();
 //right() case_with_battery();
 
+//top_plate();
 //switch_plate();
-//bottom_plate();
-
-//switch_holes(20);
