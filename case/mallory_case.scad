@@ -190,7 +190,6 @@ switch_positions=[
         [2.25, 3, 1.9], // For filling the gap
         [-0.75, 3.5, 1], // dummy
         [0.125, 4, 2.75],
-        //[2.3, 4.07929134, 1.55],
         [2.275, 4.07929134, 1.5],
         [2, 4, 2],  // dummy
     ],
@@ -219,6 +218,7 @@ module switch_hole(depth) {
     notch_width  = 3.5001;
     notch_offset = 4.2545;
     notch_depth  = 0.8128;
+    
     if (depth==0) {
         square([switch_hole_size, switch_hole_size], center=true);
         translate([0, notch_offset]) {
@@ -387,9 +387,76 @@ module case_with_battery() {
     }
 }
 
-case_with_battery();
+module foot() {
+    rad = 12;
+    dist = 90;
+    
+    difference() {
+        rotate([0, 90, 0]) {
+            translate([0, 0, dist/2]) sphere(r=rad);
+            translate([0, 0, -dist/2]) sphere(r=rad);
+            cylinder(r=rad, h=dist, center=true);   
+        }
+        translate([0, 0, 15]) cube([120, 30, 30], center=true);
+        translate([dist/2, 0, 0]) cylinder(r=1.75, h=10, center=true);
+        translate([-dist/2, 0, 0]) cylinder(r=1.75, h=10, center=true);
+    }
+}
+
+module washer() {
+    hex=5.8;
+    difference() {
+        cylinder(d=8, h=3.2);
+        cylinder(d=3.5, h=10, center=true);
+        translate([0,0,6.6]) {
+            intersection() {
+                cube([10, hex, 12], center=true);
+                rotate([0, 0, 60]) cube([10, hex, 10], center=true);
+                rotate([0, 0, 120]) cube([10, hex, 10], center=true);
+            }
+        }
+    }
+}
+
+module cover() {
+    difference() {
+        union() {
+            cube([24, 50, 2]); 
+            translate([6, 0, 0]) cube([12, 46, 2.5]);
+            intersection() {
+                translate([2,0,0]) cube([20, 50, 15]);
+                translate([0, 9, 0]) rotate([0, 0, -78]) cube([24, 50, 15]);
+            }   
+            translate([2, 0, 10]) cube([20, 16, 5]); 
+        }
+        rotate([0, 0, -78]) cube([24, 50, 20]);
+        translate([2, 16, 1.5]) cube([4, 46, 1]);
+        translate([18, 16, 1.5]) cube([4, 46, 1]);
+        
+    }
+
+}
+
+//case_with_battery();
 //left() case_with_battery();
 //right() case_with_battery();
 
-//top_plate();
 //switch_plate();
+
+//foot();
+//washer();
+//cover();
+
+color([0, 0.5, 0.5]) translate([0, 0, 20]) difference() {
+    plate([width, height, 3], 3); 
+    key_holes(3);
+    case_screw_holes();
+}
+
+case_with_battery();
+
+color([0, 0.3, 0.7]) translate([0, 0, -7]) difference() {
+    plate([width, height, 3], 3); 
+    case_screw_holes();
+}
+
